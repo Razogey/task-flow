@@ -6,12 +6,13 @@ export const ToDo = () => {
     const [tasks, setTasks] = useState([])
 
     const addTask = () => {
+        if (inputValue.trim() === "") return
         setTasks([...tasks, inputValue])
         setInputValue("")
     }
 
-    const removeTask = (task) => {
-        setTasks(tasks.filter(i=>i!==task))
+    const removeTask = (task_id) => {
+        setTasks(tasks.filter((x,i)=>i!==task_id))
     }
 
     return (
@@ -28,7 +29,7 @@ export const ToDo = () => {
             <button onClick={addTask}>Add Task</button>
             <ul className="list">
                 {tasks.map((task, index) => {
-                    return <li key={index} className="list-item">{task}  <button onClick={() => removeTask(task)}>Remove</button></li>
+                    return <li key={index} className="list-item">{task}  <button onClick={() => removeTask(index)}>Remove</button></li>
                 })}
             </ul>
         </div>
