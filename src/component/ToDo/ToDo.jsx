@@ -10,6 +10,10 @@ export const ToDo = () => {
         setInputValue("")
     }
 
+    const removeTask = (task) => {
+        setTasks(tasks.filter(i=>i!==task))
+    }
+
     return (
         <div className="todo-main">
             <h3>To Do List</h3>
@@ -24,7 +28,7 @@ export const ToDo = () => {
             <button onClick={addTask}>Add Task</button>
             <ul className="list">
                 {tasks.map((task, index) => {
-                    return <li key={index} className="list-item">{task}</li>
+                    return <li key={index} className="list-item">{task}  <button onClick={() => removeTask(task)}>Remove</button></li>
                 })}
             </ul>
         </div>
