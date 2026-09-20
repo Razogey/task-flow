@@ -17,7 +17,8 @@ export const ToDo = () => {
                 type="text" 
                 onChange={(e) => {setInputValue(e.target.value)}} 
                 value={inputValue} 
-                placeholder="add new task..."          
+                placeholder="add new task..."       
+                onKeyDown={(e) => {if (e.key === "Enter") {addTask()}}}         
             />
             <br />
             <button onClick={addTask}>Add Task</button>
