@@ -6,7 +6,7 @@
   --color-primary-hover: #6A5CE0;
   --color-primary-light: #EDEAFE;
   
-  --color-bg-page: #F3EFEA;
+  --color-bg-page: #F8F5F0;
   --color-bg-panel: #FBFAF8;
   --color-bg-card: #FFFFFF;
   --color-bg-input: #FFFFFF;
@@ -35,6 +35,7 @@
   --radius-pill: 999px;
 
   --shadow-card: 0 4px 24px rgba(36, 31, 61, 0.06);
+  --shadow-card-lg: 0 12px 32px rgba(36, 31, 61, 0.09);
   --shadow-focus: 0 0 0 3px rgba(124, 110, 242, 0.15);
 
   --color-personal: #3FBF7F;
@@ -58,7 +59,7 @@ body {
    ========================================================== */
 .app-shell {
   display: flex;
-  gap: var(--space-6);
+  gap: var(--space-4);
   max-width: 1350px;
   margin: 40px auto;
   padding: 0 var(--space-4);
@@ -82,7 +83,7 @@ body {
   background-color: var(--color-bg-card);
   padding: var(--space-5);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-card);
+  box-shadow: var(--shadow-card-lg);
   display: flex;
   flex-direction: column;
   gap: var(--space-5);
@@ -216,7 +217,7 @@ body {
   padding: var(--space-4) var(--space-5);
   background-color: var(--color-bg-card);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-card);
+  box-shadow: var(--shadow-card-lg);
   gap: var(--space-4);
   box-sizing: border-box;
 }
@@ -348,7 +349,7 @@ body {
   background-color: var(--color-bg-card);
   padding: var(--space-5);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-card);
+  box-shadow: var(--shadow-card-lg);
   box-sizing: border-box;
   text-align: left;
 }
