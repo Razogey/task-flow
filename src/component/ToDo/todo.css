@@ -36,6 +36,13 @@
 
   --shadow-card: 0 4px 24px rgba(36, 31, 61, 0.06);
   --shadow-focus: 0 0 0 3px rgba(124, 110, 242, 0.15);
+
+  --color-personal: #3FBF7F;
+  --color-personal-bg: #E6F8EE;
+  --color-health: #F2646E;
+  --color-health-bg: #FCEAEC;
+  --color-study: #4C8DF2;
+  --color-study-bg: #E9F1FE;
 }
 
 body {
@@ -94,6 +101,9 @@ body {
   height: 36px;
   background-color: var(--color-primary);
   border-radius: var(--radius-sm);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
 }
 
 .sidebar-brand h2 {
@@ -192,9 +202,9 @@ body {
   border-radius: 50%;
 }
 .dot.work { background-color: var(--color-primary); }
-.dot.personal { background-color: #3FBF7F; }
-.dot.health { background-color: #F2646E; }
-.dot.study { background-color: #4C8DF2; }
+.dot.personal { background-color: var(--color-personal); }
+.dot.health { background-color: var(--color-health); }
+.dot.study { background-color: var(--color-study); }
 
 /* ==========================================================
    Header Styles
@@ -245,10 +255,18 @@ body {
   box-sizing: border-box;
 }
 
+.search-input:hover {
+  border-color: var(--color-border-strong);
+}
+
 .search-input:focus {
   border-color: var(--color-primary);
   box-shadow: var(--shadow-focus);
   background-color: var(--color-bg-input);
+}
+
+.search-input::placeholder {
+  color: var(--color-text-muted);
 }
 
 .search-icon {
@@ -391,9 +409,10 @@ body {
 
 .list-item {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  padding: 12px var(--space-4);
+  gap: var(--space-3);
+  padding: 14px var(--space-4);
   background-color: var(--color-bg-panel);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
@@ -403,18 +422,22 @@ body {
 
 .list-item:hover {
   border-color: var(--color-border-strong);
+  box-shadow: 0 2px 10px rgba(36, 31, 61, 0.04);
 }
 
 .list-item button {
-  background-color: transparent;
-  color: var(--color-danger);
   padding: var(--space-1) var(--space-2);
   font-size: 0.85rem;
   margin-top: 0;
   border-radius: var(--radius-sm);
 }
 
-.list-item button:hover {
+.remove-btn {
+  background-color: transparent;
+  color: var(--color-danger);
+}
+
+.remove-btn:hover {
   background-color: rgba(228, 87, 76, 0.1);
 }
 
@@ -560,4 +583,222 @@ body {
   .sidebar-nav, .sidebar-categories {
     flex-direction: column;
   }
+}
+
+/* ==========================================================
+   Task Input, Task List Container & In-Row Editing
+   ========================================================== */
+.task-input-container {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.task-input-container input[type="text"] {
+  flex: 1;
+}
+
+.task-input-container button {
+  margin-top: 0;
+  flex-shrink: 0;
+}
+
+.task-list {
+  list-style: none;
+  padding: 0;
+  margin-top: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.task-list__empty {
+  text-align: center;
+  color: var(--color-text-muted);
+  padding: var(--space-5) 0;
+}
+
+.nav-label {
+  flex: 1;
+}
+
+.task-text {
+  cursor: pointer;
+  color: var(--color-text-body);
+  transition: opacity 0.15s ease, color 0.15s ease;
+}
+
+.task-text.completed {
+  text-decoration: line-through;
+  color: var(--color-text-muted);
+  opacity: 0.65;
+}
+
+.task-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding-top: 2px;
+}
+
+.edit-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex: 1;
+}
+
+.edit-row input[type="text"] {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1.5px solid var(--color-primary);
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  outline: none;
+  box-shadow: var(--shadow-focus);
+}
+
+.save-btn {
+  background-color: var(--color-primary);
+  color: #ffffff;
+  border-radius: var(--radius-pill);
+  padding: 6px 16px !important;
+  font-weight: 500;
+}
+
+.save-btn:hover {
+  background-color: var(--color-primary-hover);
+}
+
+.cancel-btn {
+  background-color: transparent;
+  color: var(--color-text-muted);
+}
+
+.cancel-btn:hover {
+  color: var(--color-text-primary);
+}
+
+/* ==========================================================
+   Custom Checkbox (left of task title)
+   ========================================================== */
+.checkbox {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  cursor: pointer;
+  margin-top: 1px;
+}
+
+.checkbox input[type="checkbox"] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
+.checkbox__box {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  border: 1.5px solid var(--color-border-strong);
+  background-color: var(--color-bg-card);
+  color: transparent;
+  display: grid;
+  place-items: center;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.checkbox input[type="checkbox"]:checked + .checkbox__box {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #ffffff;
+}
+
+.checkbox input[type="checkbox"]:focus-visible + .checkbox__box {
+  box-shadow: var(--shadow-focus);
+}
+
+.checkbox:hover .checkbox__box {
+  border-color: var(--color-primary);
+}
+
+/* ==========================================================
+   Task Row Layout: checkbox + content block
+   ========================================================== */
+.list-item__main {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  flex: 1;
+  min-width: 0;
+}
+
+.task-content {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.task-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.category-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 0.72rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.category-badge.work { color: var(--color-primary); background-color: var(--color-primary-light); }
+.category-badge.personal { color: var(--color-personal); background-color: var(--color-personal-bg); }
+.category-badge.health { color: var(--color-health); background-color: var(--color-health-bg); }
+.category-badge.study { color: var(--color-study); background-color: var(--color-study-bg); }
+
+.task-date {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+}
+
+/* ==========================================================
+   Add Task Input: circular "+" icon inside the field
+   ========================================================== */
+.task-input-field {
+  position: relative;
+  flex: 1;
+}
+
+.task-input-icon {
+  position: absolute;
+  left: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: var(--color-primary);
+  color: #ffffff;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.task-input-field input[type="text"] {
+  padding-left: 46px;
+  border-radius: var(--radius-pill);
 }

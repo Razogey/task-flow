@@ -9,8 +9,8 @@ import "./todo.css";
 export const ToDo = () => {
     const [inputValue, setInputValue] = useState("");
     const [tasks, setTasks] = useState([
-        {id: 1, text: "Study Django REST Framework", completed: false, isEditing: false, category: "Study", list: "today"},
-        {id: 2, text: "Gym workout session", completed: true, isEditing: false, category: "Health", list: "today"}
+        {id: 1, text: "Study Django REST Framework", completed: false, isEditing: false, category: "Study", list: "today", createdAt: "2026-09-18T09:00:00.000Z"},
+        {id: 2, text: "Gym workout session", completed: true, isEditing: false, category: "Health", list: "today", createdAt: "2026-09-19T07:30:00.000Z"}
     ]);
     
     const [activeFilter, setActiveFilter] = useState("today");
@@ -56,7 +56,8 @@ export const ToDo = () => {
             completed: false, 
             isEditing: false, 
             category: "Personal", 
-            list: "today"
+            list: "today",
+            createdAt: new Date().toISOString()
         }]);
         setInputValue("");
     };
@@ -75,19 +76,26 @@ export const ToDo = () => {
     };
 
     const startEditing = (id) => {
-        setTasks(tasks.map(task => {
-            if (task.id === id) {
-                return { ...task, isEditing: true };
-            }
-            return task;
-        }));
+        setTasks(tasks.map(task => ({
+            ...task,
+            isEditing: task.id === id
+        })));
+    };
+
+    const cancelEdit = (id) => {
+        setTasks(tasks.map(task =>
+            task.id === id ? { ...task, isEditing: false } : task
+        ));
     };
 
     const saveEdit = (id, newText) => {
-        if (newText.trim() === "") return;
+        if (newText.trim() === "") {
+            cancelEdit(id);
+            return;
+        }
         setTasks(tasks.map(task => {
             if (task.id === id) {
-                return { ...task, text: newText, isEditing: false };
+                return { ...task, text: newText.trim(), isEditing: false };
             }
             return task;
         }));
@@ -95,40 +103,33 @@ export const ToDo = () => {
 
     return (
         <div className="app-shell">
-            {/* 1. الشريط الجانبي */}
             <SideBar 
                 activeFilter={activeFilter}
                 setActiveFilter={setActiveFilter}
                 counts={counts}
             />
-
-            {/* 2. منطقة المحتوى (تضم الهيدر وبطاقة المهام تحت بعضهما البعض بجانب السايدبار) */}
             <div className="main-content-area">
                 <Header 
                     userName="Abdelrazzag Abdalla"
                     searchQuery={searchQuery}
                     onSearchChange={setSearchQuery}
                 />
-
                 <div className="todo-main">
                     <h3>To Do List: <span style={{ textTransform: 'capitalize' }}>{activeFilter}</span></h3>
-                    
                     <TaskInput 
                         inputValue={inputValue} 
                         setInputValue={setInputValue} 
                         addTask={addTask} 
                     />
-
                     <br />
-                    
                     <TaskList 
                         tasks={filteredTasks}
                         onToggle={changeStatus}
                         onEdit={startEditing}
                         onSaveEdit={saveEdit}
+                        onCancelEdit={cancelEdit}
                         onDelete={removeTask}
                     />
-
                     <TaskFooter 
                         tasksCount={activeTasksCount}
                         currentTab={footerTab}

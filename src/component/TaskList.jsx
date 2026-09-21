@@ -1,7 +1,7 @@
 import React from 'react';
 import { TaskItem } from './TaskItem';
 
-export const TaskList = ({ tasks, onToggle, onEdit, onDelete }) => {
+export const TaskList = ({ tasks, onToggle, onEdit, onSaveEdit, onCancelEdit, onDelete }) => {
   if (!tasks || tasks.length === 0) {
     return (
       <div className="task-list__empty">
@@ -16,9 +16,12 @@ export const TaskList = ({ tasks, onToggle, onEdit, onDelete }) => {
         <TaskItem
           key={task.id}
           task={task}
-          onToggle={onToggle}
-          onEdit={onEdit}
-          onDelete={onDelete}
+          id={task.id}
+          changeStatus={onToggle}
+          startEditing={onEdit}
+          saveEdit={onSaveEdit}
+          cancelEdit={onCancelEdit}
+          removeTask={onDelete}
         />
       ))}
     </div>
