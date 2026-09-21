@@ -7,18 +7,37 @@ export const ToDo = () => {
 
     const addTask = () => {
         if (inputValue.trim() === "") return
-        setTasks([...tasks, {text:inputValue, completed: false}])
+        setTasks([...tasks, { text: inputValue, completed: false, isEditing: false }])
         setInputValue("")
     }
 
     const removeTask = (task_id) => {
-        setTasks(tasks.filter((_,i)=>i!==task_id))
+        setTasks(tasks.filter((_, i) => i !== task_id))
     }
 
     const changeStatus = (targetedIndex) => {
-        setTasks(tasks?.map((task, index) => {
+        setTasks(tasks.map((task, index) => {
             if (index === targetedIndex) {
                 return {...task, completed: !task.completed}
+            }
+            return task
+        }))
+    }
+
+    const startEditing = (targetedIndex) => {
+        setTasks(tasks.map((task, index) => {
+            if (index === targetedIndex) {
+                return { ...task, isEditing: true }
+            }
+            return task
+        }))
+    }
+
+    const saveEdit = (targetedIndex, newText) => {
+        if (newText.trim() === "") return;
+        setTasks(tasks.map((task, index) => {
+            if (index === targetedIndex) {
+                return { ...task, text: newText, isEditing: false }
             }
             return task
         }))
@@ -32,7 +51,7 @@ export const ToDo = () => {
                 onChange={(e) => {setInputValue(e.target.value)}} 
                 value={inputValue} 
                 placeholder="add new task..."       
-                onKeyDown={(e) => {if (e.key === "Enter") {addTask()}}}         
+                onKeyDown={(e) => {if (e.key === "Enter") {addTask()}}}        
             />
             <br />
             <button onClick={addTask}>Add Task</button>
@@ -40,23 +59,40 @@ export const ToDo = () => {
                 {tasks?.map((task, index) => {
                     return (
                         <li key={index} className="list-item">
-                            <span 
-                                onClick={() => changeStatus(index)}
-                                style={{ 
+                            {task.isEditing ? (
+                                <input 
+                                    type="text"
+                                    defaultValue={task.text}
+                                    autoFocus
+                                    onBlur={(e) => saveEdit(index, e.target.value)}
+                                    onKeyDown={(e) => {
+                                        if (e.key === "Enter") {
+                                            saveEdit(index, e.target.value)
+                                        }
+                                    }}
+                                />
+                            ) : (
+                                <span 
+                                    onDoubleClick={() => startEditing(index)}
+                                    onClick={() => changeStatus(index)}
+                                    style={{ 
                                         textDecoration: task.completed ? "line-through" : "none",
                                         cursor: "pointer",
                                         opacity: task.completed ? 0.6 : 1 ,
                                         color: task.completed ? "#ff0000" : "#6b6375"
                                     }}
-                            >
-                                {task.text}  
-                            </span>
+                                    title="Double click to edit"
+                                >
+                                    {task.text}  
+                                </span>
+                            )}
+
                             <input 
                                 type="checkbox" 
-                                name="Done"  
                                 checked={task.completed} 
-                                onChange={() => changeStatus(index)}
+                                onChange={() => changeStatus(index)} 
                             />
+
                             <button onClick={() => removeTask(index)}>Remove</button>
                         </li>
                     )
