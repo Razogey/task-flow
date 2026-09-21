@@ -84,3 +84,140 @@
   background-color: rgba(228, 87, 76, 0.1);
   border-radius: var(--radius-sm);
 }
+
+/* Sidebar Layout */
+.app-shell {
+  display: flex;
+  gap: 32px;
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+  font-family: 'Inter', sans-serif;
+}
+
+.sidebar {
+  width: 240px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-logo {
+  width: 36px;
+  height: 36px;
+  background-color: #7C6EF2;
+  border-radius: 10px;
+}
+
+.sidebar-brand h2 {
+  font-size: 1.1rem;
+  color: #241F3D;
+  margin: 0;
+}
+
+.brand-tagline {
+  font-size: 0.75rem;
+  color: #8B8798;
+  margin: 0;
+}
+
+/* Nav Items */
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.nav-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: transparent;
+  border: none;
+  padding: 10px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #3F3A56;
+  text-align: left;
+  transition: background 0.2s;
+}
+
+.nav-item:hover {
+  background-color: rgba(124, 110, 242, 0.08);
+}
+
+.nav-item.active {
+  background-color: #EDEAFE;
+  color: #7C6EF2;
+  font-weight: 500;
+}
+
+/* Categories */
+.sidebar-categories {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sidebar-categories h4 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: #8B8798;
+  margin-bottom: 4px;
+  letter-spacing: 0.5px;
+}
+
+.category-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #3F3A56;
+  transition: background 0.2s;
+}
+
+.category-item:hover {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+.category-item.active {
+  background-color: #EDEAFE;
+  color: #7C6EF2;
+}
+
+.category-item .counter {
+  margin-left: auto;
+  color: #8B8798;
+  font-size: 0.8rem;
+}
+
+/* Dots */
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.dot.work { background-color: #7C6EF2; }
+.dot.personal { background-color: #3FBF7F; }
+.dot.health { background-color: #F2646E; }
+.dot.study { background-color: #4C8DF2; }
+
+/* Main Content Box */
+.todo-main {
+  flex: 1;
+  background: #FFFFFF;
+  padding: 32px;
+  border-radius: 20px;
+  box-shadow: 0 4px 24px rgba(36, 31, 61, 0.04);
+}
