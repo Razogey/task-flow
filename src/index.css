@@ -1,33 +1,73 @@
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  /* Brand */
+  --color-primary: #7C6EF2;        /* Taskly purple - buttons, active states */
+  --color-primary-hover: #6A5CE0;
+  --color-primary-light: #EDEAFE;  /* active sidebar item bg, input focus ring */
+  --color-primary-soft: #EEEAFC;   /* "Work" badge bg */
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  /* Neutral / Background */
+  --color-bg-page: #F3EFEA;        /* warm beige outer canvas */
+  --color-bg-panel: #FBFAF8;       /* sidebar + card panel background */
+  --color-bg-card: #FFFFFF;        /* main content card */
+  --color-bg-input: #FFFFFF;
+  --color-border: #ECE8E3;
+  --color-border-strong: #E2DED8;
+
+  /* Text */
+  --color-text-primary: #241F3D;   /* headings */
+  --color-text-body: #3F3A56;
+  --color-text-muted: #8B8798;
+  --color-text-faint: #B4B0BE;
+
+  /* Category accents */
+  --color-work: #7C6EF2;
+  --color-work-bg: #EEEAFC;
+  --color-personal: #3FBF7F;
+  --color-personal-bg: #E6F8EE;
+  --color-health: #F2646E;
+  --color-health-bg: #FCEAEC;
+  --color-study: #4C8DF2;
+  --color-study-bg: #E9F1FE;
+
+  /* Semantic */
+  --color-success: #7C6EF2;        /* checkbox checked fill */
+  --color-danger: #E4574C;
+
+  /* Typography */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-serif: 'Playfair Display', Georgia, serif; /* italic quote panels */
+
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.8125rem;
+  --fs-base: 0.9375rem;
+  --fs-md: 1rem;
+  --fs-lg: 1.25rem;
+  --fs-xl: 2rem;    
+
+  /* Spacing scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+
+  /* Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-pill: 999px;
+
+  /* Shadows */
+  --shadow-card: 0 4px 24px rgba(36, 31, 61, 0.06);
+  --shadow-card-lg: 0 10px 40px rgba(36, 31, 61, 0.08);
+  --shadow-focus: 0 0 0 3px rgba(124, 110, 242, 0.15);
 
   @media (max-width: 1024px) {
     font-size: 16px;
   }
 }
+
 
 @media (prefers-color-scheme: dark) {
   :root {
