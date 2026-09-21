@@ -2,6 +2,7 @@ import { useState } from "react";
 import { TaskInput } from "../TaskInput";
 import { TaskList } from "../TaskList"; 
 import { SideBar } from "../Sidebar";
+import { Header } from "../Header";
 import "./todo.css";
 
 export const ToDo = () => {
@@ -12,6 +13,7 @@ export const ToDo = () => {
     ]);
     
     const [activeFilter, setActiveFilter] = useState("today");
+    const [searchQuery, setSearchQuery] = useState("");
 
     const counts = {
         today: tasks.filter(t => t.list === 'today' && !t.completed).length,
@@ -25,11 +27,15 @@ export const ToDo = () => {
     };
 
     const filteredTasks = tasks.filter(task => {
-        if (activeFilter === 'today') return task.list === 'today';
-        if (activeFilter === 'upcoming') return task.list === 'upcoming';
-        if (activeFilter === 'completed') return task.completed;
-        if (activeFilter === 'all') return true;
-        return task.category === activeFilter;
+        let matchesFilter = true;
+        if (activeFilter === 'today') matchesFilter = task.list === 'today';
+        else if (activeFilter === 'upcoming') matchesFilter = task.list === 'upcoming';
+        else if (activeFilter === 'completed') matchesFilter = task.completed;
+        else if (activeFilter === 'all') matchesFilter = true;
+        else matchesFilter = task.category === activeFilter;
+
+        const matchesSearch = task.text.toLowerCase().includes(searchQuery.toLowerCase());
+        return matchesFilter && matchesSearch;
     });
 
     const addTask = () => {
@@ -78,30 +84,41 @@ export const ToDo = () => {
     };
 
     return (
-        <div className="app-shell" style={{ display: "flex", gap: "24px" }}>
+        <div className="app-shell">
+            {/* 1. الشريط الجانبي */}
             <SideBar 
                 activeFilter={activeFilter}
                 setActiveFilter={setActiveFilter}
                 counts={counts}
             />
-            <div className="todo-main">
-                <h3>To Do List: <span style={{ textTransform: 'capitalize' }}>{activeFilter}</span></h3>
-                
-                <TaskInput 
-                    inputValue={inputValue} 
-                    setInputValue={setInputValue} 
-                    addTask={addTask} 
+
+            {/* 2. منطقة المحتوى (تضم الهيدر وبطاقة المهام تحت بعضهما البعض بجانب السايدبار) */}
+            <div className="main-content-area">
+                <Header 
+                    userName="Abdelrazzag Abdalla"
+                    searchQuery={searchQuery}
+                    onSearchChange={setSearchQuery}
                 />
 
-                <br />
-                
-                <TaskList 
-                    tasks={filteredTasks}
-                    onToggle={changeStatus}
-                    onEdit={startEditing}
-                    onSaveEdit={saveEdit}
-                    onDelete={removeTask}
-                />
+                <div className="todo-main">
+                    <h3>To Do List: <span style={{ textTransform: 'capitalize' }}>{activeFilter}</span></h3>
+                    
+                    <TaskInput 
+                        inputValue={inputValue} 
+                        setInputValue={setInputValue} 
+                        addTask={addTask} 
+                    />
+
+                    <br />
+                    
+                    <TaskList 
+                        tasks={filteredTasks}
+                        onToggle={changeStatus}
+                        onEdit={startEditing}
+                        onSaveEdit={saveEdit}
+                        onDelete={removeTask}
+                    />
+                </div>
             </div>
         </div>
     );
