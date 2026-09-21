@@ -1,4 +1,4 @@
-export const TaskItem = ({ task, index, changeStatus, startEditing, saveEdit, removeTask }) => {
+export const TaskItem = ({ task, id, changeStatus, startEditing, saveEdit, removeTask }) => {
     return (
         <li className="list-item">
             {task.isEditing ? (
@@ -6,17 +6,17 @@ export const TaskItem = ({ task, index, changeStatus, startEditing, saveEdit, re
                     type="text"
                     defaultValue={task.text}
                     autoFocus
-                    onBlur={(e) => saveEdit(index, e.target.value)}
+                    onBlur={(e) => saveEdit(e.target.value)}
                     onKeyDown={(e) => {
                         if (e.key === "Enter") {
-                            saveEdit(index, e.target.value);
+                            saveEdit(e.target.value);
                         }
                     }}
                 />
             ) : (
                 <span 
-                    onDoubleClick={() => startEditing(index)}
-                    onClick={() => changeStatus(index)}
+                    onDoubleClick={() => startEditing(id)}
+                    onClick={() => changeStatus(id)}
                     style={{ 
                         textDecoration: task.completed ? "line-through" : "none",
                         cursor: "pointer",
@@ -29,13 +29,15 @@ export const TaskItem = ({ task, index, changeStatus, startEditing, saveEdit, re
                 </span>
             )}
 
-            <input 
-                type="checkbox" 
-                checked={task.completed} 
-                onChange={() => changeStatus(index)} 
-            />
+            <div className="task-actions">
+                <input 
+                    type="checkbox" 
+                    checked={task.completed} 
+                    onChange={() => changeStatus(id)} 
+                />
 
-            <button onClick={() => removeTask(index)}>Remove</button>
+                <button className="remove-btn" onClick={() => removeTask(id)}>Remove</button>
+            </div>
         </li>
     );
 };

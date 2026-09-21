@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { TaskInput } from "../TaskInput";
-import { TaskItem } from "../TaskItem";
+import { TaskList } from "../TaskList"; 
 import { SideBar } from "../Sidebar";
 import "./todo.css";
 
@@ -24,7 +24,6 @@ export const ToDo = () => {
         study: tasks.filter(t => t.category === 'Study' && !t.completed).length,
     };
 
-    // استخدام القائمة المفلطرة بناءً على الفلتر النشط
     const filteredTasks = tasks.filter(task => {
         if (activeFilter === 'today') return task.list === 'today';
         if (activeFilter === 'upcoming') return task.list === 'upcoming';
@@ -46,7 +45,6 @@ export const ToDo = () => {
         setInputValue("");
     };
 
-    // التعديل هنا: الاعتماد على الـ id بدلاً من الـ index
     const removeTask = (id) => {
         setTasks(tasks.filter(task => task.id !== id));
     };
@@ -97,20 +95,13 @@ export const ToDo = () => {
 
                 <br />
                 
-                <ul className="list">
-                    {/* استخدام filteredTasks وعمل الـ Arrow Functions للدوال */}
-                    {filteredTasks?.map((task) => (
-                        <TaskItem 
-                            key={task.id}
-                            task={task}
-                            index={task.id}
-                            changeStatus={() => changeStatus(task.id)}
-                            startEditing={() => startEditing(task.id)}
-                            saveEdit={(newText) => saveEdit(task.id, newText)}
-                            removeTask={() => removeTask(task.id)}
-                        />
-                    ))}
-                </ul>
+                <TaskList 
+                    tasks={filteredTasks}
+                    onToggle={changeStatus}
+                    onEdit={startEditing}
+                    onSaveEdit={saveEdit}
+                    onDelete={removeTask}
+                />
             </div>
         </div>
     );
