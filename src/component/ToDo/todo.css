@@ -419,6 +419,97 @@ body {
 }
 
 /* ==========================================================
+   Task Footer Styles
+   ========================================================== */
+.task-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: var(--space-4);
+  margin-top: var(--space-5);
+  border-top: 1px solid var(--color-border);
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.task-footer__counter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-text-body);
+}
+
+.task-footer__filters {
+  display: flex;
+  background-color: var(--color-bg-panel);
+  padding: 3px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border);
+}
+
+.filter-btn {
+  background: transparent;
+  border: none;
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 0 !important;
+}
+
+.filter-btn:hover {
+  color: var(--color-text-primary);
+}
+
+.filter-btn.active {
+  background-color: var(--color-bg-card);
+  color: var(--color-primary);
+  box-shadow: 0 2px 6px rgba(36, 31, 61, 0.05);
+}
+
+.task-footer__clear-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: none;
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 6px 8px;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+  margin-top: 0 !important;
+}
+
+.task-footer__clear-btn:hover {
+  background-color: rgba(228, 87, 76, 0.08);
+  color: var(--color-danger);
+}
+
+/* استجابة الشاشات الصغيرة للفوتر */
+@media (max-width: 768px) {
+  .task-footer {
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    text-align: center;
+  }
+  .task-footer__counter, .task-footer__filters, .task-footer__clear-btn {
+    justify-content: center;
+  }
+  .task-footer__filters {
+    width: 100%;
+    justify-content: space-around;
+  }
+}
+
+/* ==========================================================
    Responsive Breakpoints (Media Queries)
    ========================================================== */
 @media (max-width: 1024px) {

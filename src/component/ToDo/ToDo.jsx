@@ -3,6 +3,7 @@ import { TaskInput } from "../TaskInput";
 import { TaskList } from "../TaskList"; 
 import { SideBar } from "../Sidebar";
 import { Header } from "../Header";
+import { TaskFooter } from "../TaskFooter";
 import "./todo.css";
 
 export const ToDo = () => {
@@ -14,6 +15,12 @@ export const ToDo = () => {
     
     const [activeFilter, setActiveFilter] = useState("today");
     const [searchQuery, setSearchQuery] = useState("");
+    const [footerTab, setFooterTab] = useState('all');
+    const activeTasksCount = tasks.filter(t => !t.completed).length;    
+
+    const clearCompletedTasks = () => {
+        setTasks(tasks.filter(task => !task.completed));
+    };
 
     const counts = {
         today: tasks.filter(t => t.list === 'today' && !t.completed).length,
@@ -27,15 +34,18 @@ export const ToDo = () => {
     };
 
     const filteredTasks = tasks.filter(task => {
-        let matchesFilter = true;
-        if (activeFilter === 'today') matchesFilter = task.list === 'today';
-        else if (activeFilter === 'upcoming') matchesFilter = task.list === 'upcoming';
-        else if (activeFilter === 'completed') matchesFilter = task.completed;
-        else if (activeFilter === 'all') matchesFilter = true;
-        else matchesFilter = task.category === activeFilter;
+        let matchesSidebar = true;
+        if (activeFilter === 'today') matchesSidebar = task.list === 'today';
+        else if (activeFilter === 'upcoming') matchesSidebar = task.list === 'upcoming';
+        else if (activeFilter === 'completed') matchesSidebar = task.completed;
+        else if (activeFilter !== 'all') matchesSidebar = task.category === activeFilter;
 
+        let matchesFooterTab = true;
+        if (footerTab === 'active') matchesFooterTab = !task.completed;
+        else if (footerTab === 'completed') matchesFooterTab = task.completed;
         const matchesSearch = task.text.toLowerCase().includes(searchQuery.toLowerCase());
-        return matchesFilter && matchesSearch;
+
+        return matchesSidebar && matchesFooterTab && matchesSearch;
     });
 
     const addTask = () => {
@@ -117,6 +127,13 @@ export const ToDo = () => {
                         onEdit={startEditing}
                         onSaveEdit={saveEdit}
                         onDelete={removeTask}
+                    />
+
+                    <TaskFooter 
+                        tasksCount={activeTasksCount}
+                        currentTab={footerTab}
+                        onTabChange={setFooterTab}
+                        onClearCompleted={clearCompletedTasks}
                     />
                 </div>
             </div>
