@@ -29,7 +29,7 @@ export const TaskItem = ({ task, id, changeStatus, startEditing, saveEdit, cance
     const dateLabel = formatDateAdded(task.createdAt);
 
     return (
-        <li className="list-item">
+        <li className={`list-item ${task.isEditing ? "is-editing" : ""}`}>
             <div className="list-item__main">
                 <label className="checkbox">
                     <input

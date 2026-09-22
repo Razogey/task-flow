@@ -6,7 +6,7 @@
   --color-primary-hover: #6A5CE0;
   --color-primary-light: #EDEAFE;
   
-  --color-bg-page: #F8F5F0;
+  --color-bg-page: #F3EFEA;
   --color-bg-panel: #FBFAF8;
   --color-bg-card: #FFFFFF;
   --color-bg-input: #FFFFFF;
@@ -60,7 +60,7 @@ body {
    ========================================================== */
 .app-shell {
   display: flex;
-  gap: var(--space-4);
+  gap: var(--space-3);
   width: min(1350px, 100%);
   margin: clamp(16px, 4vw, 40px) auto;
   padding: 0 clamp(12px, 3vw, 24px);
@@ -72,7 +72,7 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: var(--space-5);
+  gap: var(--space-4);
   min-width: 0;
 }
 
@@ -83,8 +83,8 @@ body {
   width: 260px;
   position: relative;
   flex: 0 0 260px;
-  transition: flex-basis 0.3s ease, width 0.3s ease;
-  z-index: 3;
+  transition: flex-basis 0.9s cubic-bezier(0.22, 1, 0.36, 1), width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 4;
 }
 
 .sidebar-container.is-closed {
@@ -97,13 +97,13 @@ body {
   background-color: var(--color-bg-card);
   padding: var(--space-5);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-card-lg);
+  box-shadow: 0 12px 36px rgba(36, 31, 61, 0.1);
   display: flex;
   flex-direction: column;
   gap: var(--space-5);
   box-sizing: border-box;
   flex-shrink: 0;
-  transition: transform 0.3s ease, opacity 0.2s ease;
+  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.24s ease;
   transform-origin: left center;
 }
 
@@ -124,14 +124,27 @@ body {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-card);
-  transition: transform 0.2s ease, color 0.2s ease, background-color 0.2s ease;
-  z-index: 4;
+  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+  z-index: 5;
 }
 
 .sidebar-toggle:hover {
   color: #fff;
   background-color: var(--color-primary);
-  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(124, 110, 242, 0.24);
+  transform: translateY(-2px) scale(1.03);
+}
+
+.sidebar-toggle:active {
+  transform: translateY(0) scale(0.96);
+}
+
+.sidebar-toggle svg {
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.sidebar-toggle.is-open svg {
+  transform: rotate(90deg);
 }
 
 .sidebar-toggle:focus-visible {
@@ -140,7 +153,23 @@ body {
 }
 
 .sidebar-backdrop {
-  display: none;
+  display: block;
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  background: rgba(36, 31, 61, 0.2);
+  backdrop-filter: blur(2px);
+  opacity: 1;
+  animation: backdrop-in 0.3s ease both;
+  cursor: pointer;
+  z-index: 2;
+}
+
+@keyframes backdrop-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .sidebar-brand {
@@ -189,18 +218,25 @@ body {
   font-size: 0.9rem;
   color: var(--color-text-body);
   text-align: left;
-  transition: background 0.2s;
+  transition: background 0.5s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
   width: 100%;
 }
 
 .nav-item:hover {
   background-color: var(--color-primary-light);
+  transform: translateX(2px);
+}
+
+.nav-item:active,
+.category-item:active {
+  transform: translateX(2px) scale(0.98);
 }
 
 .nav-item.active {
   background-color: var(--color-primary-light);
   color: var(--color-primary);
   font-weight: 600;
+  box-shadow: inset 3px 0 var(--color-primary);
 }
 
 .sidebar-categories {
@@ -226,7 +262,7 @@ body {
   cursor: pointer;
   font-size: 0.9rem;
   color: var(--color-text-body);
-  transition: background 0.2s;
+  transition: background 0.5s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
   background: transparent;
   border: none;
   width: 100%;
@@ -235,12 +271,14 @@ body {
 
 .category-item:hover {
   background-color: var(--color-bg-panel);
+  transform: translateX(2px);
 }
 
 .category-item.active {
   background-color: var(--color-primary-light);
   color: var(--color-primary);
   font-weight: 500;
+  box-shadow: inset 3px 0 var(--color-primary);
 }
 
 .category-item .counter {
@@ -272,6 +310,8 @@ body {
   box-shadow: var(--shadow-card-lg);
   gap: var(--space-4);
   box-sizing: border-box;
+  position: relative;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 
 .header__greeting-group {
@@ -311,7 +351,7 @@ body {
   font-size: 0.9rem;
   color: var(--color-text-body);
   outline: none;
-  transition: all 0.2s ease;
+  transition: background-color 0.24s ease, color 0.24s ease, box-shadow 0.24s ease, transform 0.24s ease;
   box-sizing: border-box;
 }
 
@@ -370,11 +410,13 @@ body {
   display: grid;
   place-items: center;
   cursor: pointer;
-  transition: background 0.15s ease;
+  transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 
 .notification-btn:hover {
   background: var(--color-border);
+  box-shadow: var(--shadow-card);
+  transform: translateY(-2px);
 }
 
 .notification-badge {
@@ -399,6 +441,12 @@ body {
   place-items: center;
   font-size: 1rem;
   border: 1.5px solid var(--color-border);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.user-avatar:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-card);
 }
 
 /* ==========================================================
@@ -411,6 +459,11 @@ body {
   box-shadow: var(--shadow-card-lg);
   box-sizing: border-box;
   text-align: left;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.todo-main:hover {
+  box-shadow: 0 14px 42px rgba(36, 31, 61, 0.11);
 }
 
 .todo-main h3 {
@@ -438,6 +491,17 @@ body {
   box-shadow: var(--shadow-focus);
 }
 
+@keyframes edit-row-in {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 .todo-main button {
   background-color: var(--color-primary);
   color: #ffffff;
@@ -453,6 +517,8 @@ body {
 
 .todo-main button:hover {
   background-color: var(--color-primary-hover);
+  box-shadow: 0 6px 14px rgba(124, 110, 242, 0.2);
+  transform: translateY(-1px);
 }
 
 /* ==========================================================
@@ -476,13 +542,20 @@ body {
   background-color: var(--color-bg-panel);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  transition: all 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
   box-sizing: border-box;
+}
+
+.list-item.is-editing {
+  border-color: rgba(124, 110, 242, 0.45);
+  box-shadow: 0 8px 22px rgba(124, 110, 242, 0.12);
+  transform: translateY(-1px);
 }
 
 .list-item:hover {
   border-color: var(--color-border-strong);
-  box-shadow: 0 2px 10px rgba(36, 31, 61, 0.04);
+  box-shadow: 0 6px 16px rgba(36, 31, 61, 0.07);
+  transform: translateY(-1px);
 }
 
 .list-item button {
@@ -547,12 +620,18 @@ body {
 
 .filter-btn:hover {
   color: var(--color-text-primary);
+  transform: translateY(-1px);
 }
 
 .filter-btn.active {
   background-color: var(--color-bg-card);
   color: var(--color-primary);
-  box-shadow: 0 2px 6px rgba(36, 31, 61, 0.05);
+  box-shadow: 0 3px 10px rgba(36, 31, 61, 0.1);
+  transform: translateY(-1px);
+}
+
+.filter-btn:active {
+  transform: translateY(0) scale(0.97);
 }
 
 .task-footer__clear-btn {
@@ -643,14 +722,7 @@ body {
   }
 
   .sidebar-backdrop {
-    display: block;
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
     background: rgba(36, 31, 61, 0.28);
-    z-index: 2;
-    cursor: pointer;
   }
 
   .main-content-area {
@@ -734,10 +806,14 @@ body {
   align-items: center;
   gap: var(--space-2);
   flex: 1;
+  width: 100%;
+  min-width: 0;
+  animation: edit-row-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .edit-row input[type="text"] {
   flex: 1;
+  min-width: 0;
   padding: 8px 12px;
   border: 1.5px solid var(--color-primary);
   border-radius: var(--radius-sm);
@@ -765,6 +841,11 @@ body {
 
 .cancel-btn:hover {
   color: var(--color-text-primary);
+}
+
+.edit-row .cancel-btn,
+.edit-row .save-btn {
+  flex: 0 0 auto;
 }
 
 /* ==========================================================
@@ -831,6 +912,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 5px;
+  flex: 1;
   min-width: 0;
 }
 
