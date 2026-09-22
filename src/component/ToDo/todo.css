@@ -52,6 +52,7 @@ body {
   margin: 0;
   padding: 0;
   color: var(--color-text-body);
+  min-width: 320px;
 }
 
 /* ==========================================================
@@ -60,9 +61,9 @@ body {
 .app-shell {
   display: flex;
   gap: var(--space-4);
-  max-width: 1350px;
-  margin: 40px auto;
-  padding: 0 var(--space-4);
+  width: min(1350px, 100%);
+  margin: clamp(16px, 4vw, 40px) auto;
+  padding: 0 clamp(12px, 3vw, 24px);
   align-items: flex-start;
   box-sizing: border-box;
 }
@@ -78,6 +79,19 @@ body {
 /* ==========================================================
    Sidebar Styles
    ========================================================== */
+.sidebar-container {
+  width: 260px;
+  position: relative;
+  flex: 0 0 260px;
+  transition: flex-basis 0.3s ease, width 0.3s ease;
+  z-index: 3;
+}
+
+.sidebar-container.is-closed {
+  width: 0;
+  flex-basis: 0;
+}
+
 .sidebar {
   width: 260px;
   background-color: var(--color-bg-card);
@@ -89,6 +103,44 @@ body {
   gap: var(--space-5);
   box-sizing: border-box;
   flex-shrink: 0;
+  transition: transform 0.3s ease, opacity 0.2s ease;
+  transform-origin: left center;
+}
+
+.sidebar-container.is-closed .sidebar {
+  transform: translateX(calc(-100% - var(--space-4)));
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sidebar-toggle {
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  color: var(--color-primary);
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  transition: transform 0.2s ease, color 0.2s ease, background-color 0.2s ease;
+  z-index: 4;
+}
+
+.sidebar-toggle:hover {
+  color: #fff;
+  background-color: var(--color-primary);
+  transform: translateY(-2px);
+}
+
+.sidebar-toggle:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus), var(--shadow-card);
+}
+
+.sidebar-backdrop {
+  display: none;
 }
 
 .sidebar-brand {
@@ -220,6 +272,13 @@ body {
   box-shadow: var(--shadow-card-lg);
   gap: var(--space-4);
   box-sizing: border-box;
+}
+
+.header__greeting-group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: max-content;
 }
 
 .header__greeting h2 {
@@ -538,30 +597,66 @@ body {
    ========================================================== */
 @media (max-width: 1024px) {
   .app-shell {
-    flex-direction: column;
-    margin: 20px auto;
-  }
-  
-  .sidebar {
-    width: 100%;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .sidebar-nav, .sidebar-categories {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: var(--space-2);
-  }
-
-  .sidebar-categories h4 {
-    width: 100%;
+    margin-top: 20px;
   }
 }
 
 @media (max-width: 768px) {
+  .app-shell {
+    display: block;
+  }
+
+  .sidebar-container,
+  .sidebar-container.is-closed {
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: min(82vw, 320px);
+    flex-basis: auto;
+    pointer-events: none;
+  }
+
+  .sidebar-container.is-open {
+    pointer-events: auto;
+  }
+
+  .sidebar {
+    height: 100%;
+    min-height: 100vh;
+    border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+    overflow-y: auto;
+    transform: translateX(-100%);
+  }
+
+  .sidebar-container.is-open .sidebar {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
+  .sidebar-container.is-closed .sidebar {
+    transform: translateX(-100%);
+  }
+
+  .sidebar-toggle.is-open {
+    position: fixed;
+    top: 20px;
+    left: min(calc(82vw - 56px), 264px);
+  }
+
+  .sidebar-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(36, 31, 61, 0.28);
+    z-index: 2;
+    cursor: pointer;
+  }
+
+  .main-content-area {
+    width: 100%;
+  }
+
   .app-header {
     flex-direction: column;
     align-items: stretch;
@@ -576,14 +671,6 @@ body {
     justify-content: flex-end;
   }
 
-  .sidebar {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .sidebar-nav, .sidebar-categories {
-    flex-direction: column;
-  }
 }
 
 /* ==========================================================
