@@ -12,10 +12,11 @@ export const TaskList = ({ tasks, onToggle, onEdit, onSaveEdit, onCancelEdit, on
 
   return (
     <div className="task-list">
-      {tasks.map((task) => (
+      {tasks.map((task, index) => (
         <TaskItem
           key={task.id}
           task={task}
+          animationDelay={index * 55}
           id={task.id}
           changeStatus={onToggle}
           startEditing={onEdit}

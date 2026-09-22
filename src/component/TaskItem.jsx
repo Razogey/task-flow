@@ -14,7 +14,7 @@ function formatDateAdded(iso) {
     return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 }
 
-export const TaskItem = ({ task, id, changeStatus, startEditing, saveEdit, cancelEdit, removeTask }) => {
+export const TaskItem = ({ task, id, changeStatus, startEditing, saveEdit, cancelEdit, removeTask, animationDelay = 0 }) => {
     const [draft, setDraft] = useState(task.text);
 
     const commit = () => {
@@ -29,7 +29,10 @@ export const TaskItem = ({ task, id, changeStatus, startEditing, saveEdit, cance
     const dateLabel = formatDateAdded(task.createdAt);
 
     return (
-        <li className={`list-item ${task.isEditing ? "is-editing" : ""}`}>
+        <li
+            className={`list-item ${task.isEditing ? "is-editing" : ""}`}
+            style={{ "--task-delay": `${animationDelay}ms` }}
+        >
             <div className="list-item__main">
                 <label className="checkbox">
                     <input
