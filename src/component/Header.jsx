@@ -1,14 +1,25 @@
 import React from 'react';
-import { Search, Bell, Hand } from 'lucide-react';
+import { Bell, Menu, Search, X } from 'lucide-react';
 
-export const Header = ({ userName = "Rizga", searchQuery, onSearchChange }) => {
+export const Header = ({ userName = "Rizga", searchQuery, onSearchChange, isSidebarOpen, onSidebarToggle }) => {
   return (
     <header className="app-header">
-      <div className="header__greeting">
+      <div className="header__greeting-group">
+        <button
+          className={`sidebar-toggle ${isSidebarOpen ? 'is-open' : 'is-closed'}`}
+          type="button"
+          onClick={onSidebarToggle}
+          aria-label={isSidebarOpen ? 'Close sidebar' : 'Open sidebar'}
+          aria-expanded={isSidebarOpen}
+        >
+          {isSidebarOpen ? <X size={20} strokeWidth={2.25} /> : <Menu size={20} strokeWidth={2.25} />}
+        </button>
+        <div className="header__greeting">
         <h2>
           Good morning, <span className="user-name">{userName}</span> 
           
         </h2>
+        </div>
       </div>
 
       <div className="header__search-container">

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TaskInput } from "../TaskInput";
 import { TaskList } from "../TaskList"; 
 import { SideBar } from "../Sidebar";
@@ -14,9 +14,21 @@ export const ToDo = () => {
     ]);
     
     const [activeFilter, setActiveFilter] = useState("today");
+    const [isSidebarOpen, setIsSidebarOpen] = useState(() => window.innerWidth > 768);
     const [searchQuery, setSearchQuery] = useState("");
     const [footerTab, setFooterTab] = useState('all');
     const activeTasksCount = tasks.filter(t => !t.completed).length;    
+
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+            if (event.key === 'Escape') {
+                setIsSidebarOpen(false);
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, []);
 
     const clearCompletedTasks = () => {
         setTasks(tasks.filter(task => !task.completed));
@@ -107,12 +119,16 @@ export const ToDo = () => {
                 activeFilter={activeFilter}
                 setActiveFilter={setActiveFilter}
                 counts={counts}
+                isOpen={isSidebarOpen}
+                onToggle={() => setIsSidebarOpen((isOpen) => !isOpen)}
             />
             <div className="main-content-area">
                 <Header 
                     userName="Abdelrazzag Abdalla"
                     searchQuery={searchQuery}
                     onSearchChange={setSearchQuery}
+                    isSidebarOpen={isSidebarOpen}
+                    onSidebarToggle={() => setIsSidebarOpen((isOpen) => !isOpen)}
                 />
                 <div className="todo-main">
                     <h3>To Do List: <span style={{ textTransform: 'capitalize' }}>{activeFilter}</span></h3>
