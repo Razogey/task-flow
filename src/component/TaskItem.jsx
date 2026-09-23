@@ -16,6 +16,7 @@ function formatDateAdded(iso) {
 
 export const TaskItem = ({ task, id, changeStatus, startEditing, saveEdit, cancelEdit, removeTask, animationDelay = 0 }) => {
     const [draft, setDraft] = useState(task.text);
+    const [isRemoving, setIsRemoving] = useState(false);
 
     const commit = () => {
         const trimmed = draft.trim();
@@ -27,11 +28,21 @@ export const TaskItem = ({ task, id, changeStatus, startEditing, saveEdit, cance
     };
 
     const dateLabel = formatDateAdded(task.createdAt);
+    const handleRemove = () => {
+        if (!isRemoving) {
+            setIsRemoving(true);
+        }
+    };
 
     return (
         <li
-            className={`list-item ${task.isEditing ? "is-editing" : ""}`}
+            className={`list-item ${task.isEditing ? "is-editing" : ""} ${isRemoving ? "is-removing" : ""}`}
             style={{ "--task-delay": `${animationDelay}ms` }}
+            onAnimationEnd={() => {
+                if (isRemoving) {
+                    removeTask(id);
+                }
+            }}
         >
             <div className="list-item__main">
                 <label className="checkbox">
@@ -95,7 +106,7 @@ export const TaskItem = ({ task, id, changeStatus, startEditing, saveEdit, cance
 
             {!task.isEditing && (
                 <div className="task-actions">
-                    <button type="button" className="remove-btn" onClick={() => removeTask(id)}>
+                    <button type="button" className="remove-btn" onClick={handleRemove} disabled={isRemoving}>
                         Remove
                     </button>
                 </div>
