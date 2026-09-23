@@ -1,7 +1,15 @@
 import React from 'react';
-import { Bell, CheckCheck, Menu, Search, X } from 'lucide-react';
+import { Bell, CheckCheck, Menu, Search, X, Sun, Moon } from 'lucide-react';
 
-export const Header = ({ userName = "Rizga", searchQuery, onSearchChange, isSidebarOpen, onSidebarToggle }) => {
+export const Header = ({
+  userName = "Rizga",
+  searchQuery,
+  onSearchChange,
+  isSidebarOpen,
+  onSidebarToggle,
+  isDarkMode,
+  onToggleDarkMode
+}) => {
   return (
     <header className="app-header">
       <div className="header__greeting-group">
@@ -15,9 +23,6 @@ export const Header = ({ userName = "Rizga", searchQuery, onSearchChange, isSide
           {isSidebarOpen ? <X size={20} strokeWidth={2.25} /> : <Menu size={20} strokeWidth={2.25} />}
         </button>
 
-        {/* Compact brand: the sidebar owns the "Task Flow" identity while
-            it's open. The instant it's closed/collapsed, this fades and
-            slides into view so the app identity is never lost. */}
         <div
           className={`header__brand ${isSidebarOpen ? 'is-hidden' : 'is-visible'}`}
           aria-hidden={isSidebarOpen}
@@ -29,27 +34,41 @@ export const Header = ({ userName = "Rizga", searchQuery, onSearchChange, isSide
         </div>
 
         <div className="header__greeting">
-        <h2>
-          Good morning, <span className="user-name">{userName}</span> 
-          
-        </h2>
+          <h2>
+            Good morning, <span className="user-name">{userName}</span>
+          </h2>
         </div>
       </div>
 
       <div className="header__search-container">
         <Search className="search-icon" size={18} />
-        <input 
-          type="text" 
+        <input
+          type="text"
           className="search-input"
-          placeholder="Search tasks..." 
+          placeholder="Search tasks..."
           value={searchQuery}
           onChange={(e) => onSearchChange(e.target.value)}
         />
       </div>
 
       <div className="header__actions">
+        <button
+          type="button"
+          className={`theme-toggle ${isDarkMode ? 'is-dark' : 'is-light'}`}
+          onClick={onToggleDarkMode}
+          aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+          aria-pressed={isDarkMode}
+        >
+          <span className="theme-toggle__track">
+            <span className="theme-toggle__thumb">
+              <Sun className="theme-toggle__icon theme-toggle__icon--sun" size={13} strokeWidth={2.5} />
+              <Moon className="theme-toggle__icon theme-toggle__icon--moon" size={13} strokeWidth={2.5} />
+            </span>
+          </span>
+        </button>
+
         <button className="notification-btn" aria-label="Notifications">
-          <Bell size={18} color="#3F3A56" />
+          <Bell size={18} />
           <span className="notification-badge"></span>
         </button>
 

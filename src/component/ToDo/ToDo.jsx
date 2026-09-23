@@ -1,23 +1,52 @@
 import { useEffect, useState } from "react";
 import { TaskInput } from "../TaskInput";
-import { TaskList } from "../TaskList"; 
+import { TaskList } from "../TaskList";
 import { SideBar } from "../Sidebar";
 import { Header } from "../Header";
 import { TaskFooter } from "../TaskFooter";
 import "./todo.css";
 
+const THEME_STORAGE_KEY = "taskflow-theme";
+
 export const ToDo = () => {
     const [inputValue, setInputValue] = useState("");
     const [tasks, setTasks] = useState([
-        {id: 1, text: "Study Django REST Framework", completed: false, isEditing: false, category: "Study", list: "today", createdAt: "2026-09-18T09:00:00.000Z"},
-        {id: 2, text: "Gym workout session", completed: true, isEditing: false, category: "Health", list: "today", createdAt: "2026-09-19T07:30:00.000Z"}
+        { id: 1, text: "Study Django REST Framework", completed: false, isEditing: false, category: "Study", list: "today", createdAt: "2026-09-18T09:00:00.000Z" },
+        { id: 2, text: "Gym workout session", completed: true, isEditing: false, category: "Health", list: "today", createdAt: "2026-09-19T07:30:00.000Z" }
     ]);
-    
+
     const [activeFilter, setActiveFilter] = useState("today");
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [footerTab, setFooterTab] = useState('all');
-    const activeTasksCount = tasks.filter(t => !t.completed).length;    
+
+    // Dark mode: read saved preference first, fall back to OS setting
+    const [isDarkMode, setIsDarkMode] = useState(() => {
+        try {
+            const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
+            if (savedTheme) return savedTheme === "dark";
+            return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+        } catch (error) {
+            return false;
+        }
+    });
+
+    const activeTasksCount = tasks.filter(t => !t.completed).length;
+
+    // Apply the theme class to <html> and persist the choice
+    useEffect(() => {
+        document.documentElement.classList.toggle("dark-theme", isDarkMode);
+        try {
+            localStorage.setItem(THEME_STORAGE_KEY, isDarkMode ? "dark" : "light");
+        } catch (error) {
+            // localStorage may be unavailable (private browsing, etc.)
+            // theme still applies for the current session
+        }
+    }, [isDarkMode]);
+
+    const toggleDarkMode = () => {
+        setIsDarkMode((current) => !current);
+    };
 
     useEffect(() => {
         const handleKeyDown = (event) => {
@@ -66,11 +95,11 @@ export const ToDo = () => {
     const addTask = () => {
         if (inputValue.trim() === "") return;
         setTasks([...tasks, {
-            id: Date.now(), 
-            text: inputValue, 
-            completed: false, 
-            isEditing: false, 
-            category: "Personal", 
+            id: Date.now(),
+            text: inputValue,
+            completed: false,
+            isEditing: false,
+            category: "Personal",
             list: "today",
             createdAt: new Date().toISOString()
         }]);
@@ -84,7 +113,7 @@ export const ToDo = () => {
     const changeStatus = (id) => {
         setTasks(tasks.map(task => {
             if (task.id === id) {
-                return {...task, completed: !task.completed};
+                return { ...task, completed: !task.completed };
             }
             return task;
         }));
@@ -118,7 +147,7 @@ export const ToDo = () => {
 
     return (
         <div className="app-shell">
-            <SideBar 
+            <SideBar
                 activeFilter={activeFilter}
                 setActiveFilter={setActiveFilter}
                 counts={counts}
@@ -126,22 +155,24 @@ export const ToDo = () => {
                 onToggle={() => setIsSidebarOpen((isOpen) => !isOpen)}
             />
             <div className="main-content-area">
-                <Header 
+                <Header
                     userName="Abdelrazzag Abdalla"
                     searchQuery={searchQuery}
                     onSearchChange={setSearchQuery}
                     isSidebarOpen={isSidebarOpen}
                     onSidebarToggle={() => setIsSidebarOpen((isOpen) => !isOpen)}
+                    isDarkMode={isDarkMode}
+                    onToggleDarkMode={toggleDarkMode}
                 />
                 <div className="todo-main">
                     <h3>To Do List: <span style={{ textTransform: 'capitalize' }}>{activeFilter}</span></h3>
-                    <TaskInput 
-                        inputValue={inputValue} 
-                        setInputValue={setInputValue} 
-                        addTask={addTask} 
+                    <TaskInput
+                        inputValue={inputValue}
+                        setInputValue={setInputValue}
+                        addTask={addTask}
                     />
                     <br />
-                    <TaskList 
+                    <TaskList
                         tasks={filteredTasks}
                         onToggle={changeStatus}
                         onEdit={startEditing}
@@ -149,7 +180,7 @@ export const ToDo = () => {
                         onCancelEdit={cancelEdit}
                         onDelete={removeTask}
                     />
-                    <TaskFooter 
+                    <TaskFooter
                         tasksCount={activeTasksCount}
                         currentTab={footerTab}
                         onTabChange={setFooterTab}
