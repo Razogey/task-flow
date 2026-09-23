@@ -4,6 +4,10 @@ Task Flow is a responsive React task-management interface built with Vite. It pr
 
 The application currently runs entirely in the browser. Tasks are held in React component state for the current session, while the selected light or dark theme is persisted in `localStorage`.
 
+Author: [Abdelrazzag Mohamed Elfatih A. Abdalla](https://github.com/abdelrazzag)
+
+Repository: [github.com/abdelrazzag/task-flow](https://github.com/abdelrazzag/task-flow)
+
 ## Features
 
 - Task creation from the task input or by pressing Enter
@@ -109,8 +113,8 @@ The application currently runs entirely in the browser. Tasks are held in React 
 Clone the repository and enter the project directory:
 
 ```bash
-git clone <repository-url>
-cd todo
+git clone https://github.com/abdelrazzag/task-flow.git
+cd task-flow
 ```
 
 Install the project dependencies:
