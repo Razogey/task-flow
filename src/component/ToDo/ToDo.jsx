@@ -18,6 +18,7 @@ export const ToDo = () => {
     const [activeFilter, setActiveFilter] = useState("today");
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
+    const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [footerTab, setFooterTab] = useState('all');
 
     // Dark mode: read saved preference first, fall back to OS setting
@@ -163,6 +164,12 @@ export const ToDo = () => {
                     onSidebarToggle={() => setIsSidebarOpen((isOpen) => !isOpen)}
                     isDarkMode={isDarkMode}
                     onToggleDarkMode={toggleDarkMode}
+                    isSearchOpen={isSearchOpen}
+                    onSearchToggle={() => setIsSearchOpen((isOpen) => !isOpen)}
+                    onSearchClose={() => {
+                        setIsSearchOpen(false);
+                        setSearchQuery("");
+                    }}
                 />
                 <div className="todo-main">
                     <h3>To Do List: <span style={{ textTransform: 'capitalize' }}>{activeFilter}</span></h3>

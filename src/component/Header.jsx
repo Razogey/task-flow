@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Bell, CheckCheck, Menu, Search, X, Sun, Moon } from 'lucide-react';
 
 export const Header = ({
@@ -8,8 +8,37 @@ export const Header = ({
   isSidebarOpen,
   onSidebarToggle,
   isDarkMode,
-  onToggleDarkMode
+  onToggleDarkMode,
+  isSearchOpen,
+  onSearchToggle,
+  onSearchClose
 }) => {
+  const searchContainerRef = useRef(null);
+
+  useEffect(() => {
+    if (!isSearchOpen) return;
+
+    const handlePointerDown = (event) => {
+      if (searchContainerRef.current && !searchContainerRef.current.contains(event.target)) {
+        onSearchClose();
+      }
+    };
+
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        onSearchClose();
+      }
+    };
+
+    document.addEventListener('mousedown', handlePointerDown);
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('mousedown', handlePointerDown);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isSearchOpen, onSearchClose]);
+
   return (
     <header className="app-header">
       <div className="header__greeting-group">
@@ -40,15 +69,36 @@ export const Header = ({
         </div>
       </div>
 
-      <div className="header__search-container">
-        <Search className="search-icon" size={18} />
-        <input
-          type="text"
-          className="search-input"
-          placeholder="Search tasks..."
-          value={searchQuery}
-          onChange={(e) => onSearchChange(e.target.value)}
-        />
+      <div ref={searchContainerRef} className={`header__search-container ${isSearchOpen ? 'is-open' : 'is-collapsed'}`}>
+        <button
+          type="button"
+          className="search-toggle"
+          aria-label={isSearchOpen ? 'Close search' : 'Open search'}
+          aria-expanded={isSearchOpen}
+          onClick={() => {
+            if (isSearchOpen) {
+              onSearchClose();
+              return;
+            }
+            onSearchToggle();
+          }}
+        >
+          <Search size={18} />
+        </button>
+
+        <div className="search-field-wrap">
+          <Search className="search-icon" size={18} />
+          <input
+            type="text"
+            className="search-input"
+            placeholder="Search tasks..."
+            value={searchQuery}
+            onChange={(e) => onSearchChange(e.target.value)}
+            onBlur={() => {
+              if (!searchQuery.trim()) onSearchClose();
+            }}
+          />
+        </div>
       </div>
 
       <div className="header__actions">

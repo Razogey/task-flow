@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Calendar } from 'lucide-react';
 
 function formatDateAdded(iso) {
@@ -17,6 +17,31 @@ function formatDateAdded(iso) {
 export const TaskItem = ({ task, id, changeStatus, startEditing, saveEdit, cancelEdit, removeTask, animationDelay = 0 }) => {
     const [draft, setDraft] = useState(task.text);
     const [isRemoving, setIsRemoving] = useState(false);
+    const taskItemRef = useRef(null);
+
+    useEffect(() => {
+        if (!task.isEditing) return;
+
+        const handlePointerDown = (event) => {
+            if (taskItemRef.current && !taskItemRef.current.contains(event.target)) {
+                cancelEdit(id);
+            }
+        };
+
+        const handleKeyDown = (event) => {
+            if (event.key === 'Escape') {
+                cancelEdit(id);
+            }
+        };
+
+        document.addEventListener('mousedown', handlePointerDown);
+        window.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            document.removeEventListener('mousedown', handlePointerDown);
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [task.isEditing, id, cancelEdit]);
 
     const commit = () => {
         const trimmed = draft.trim();
@@ -36,6 +61,7 @@ export const TaskItem = ({ task, id, changeStatus, startEditing, saveEdit, cance
 
     return (
         <li
+            ref={taskItemRef}
             className={`list-item ${task.isEditing ? "is-editing" : ""} ${isRemoving ? "is-removing" : ""}`}
             style={{ "--task-delay": `${animationDelay}ms` }}
             onAnimationEnd={() => {
@@ -43,9 +69,15 @@ export const TaskItem = ({ task, id, changeStatus, startEditing, saveEdit, cance
                     removeTask(id);
                 }
             }}
+            onClick={(event) => {
+                if (event.target.closest('.remove-btn') || event.target.closest('.cancel-btn') || event.target.closest('.save-btn') || task.isEditing) {
+                    return;
+                }
+                changeStatus(id);
+            }}
         >
             <div className="list-item__main">
-                <label className="checkbox">
+                <label className="checkbox" onClick={(event) => event.stopPropagation()}>
                     <input
                         type="checkbox"
                         checked={task.completed}
@@ -61,7 +93,7 @@ export const TaskItem = ({ task, id, changeStatus, startEditing, saveEdit, cance
 
                 <div className="task-content">
                     {task.isEditing ? (
-                        <div className="edit-row">
+                        <div className="edit-row" onClick={(event) => event.stopPropagation()}>
                             <input
                                 type="text"
                                 value={draft}
@@ -105,7 +137,7 @@ export const TaskItem = ({ task, id, changeStatus, startEditing, saveEdit, cance
             </div>
 
             {!task.isEditing && (
-                <div className="task-actions">
+                <div className="task-actions" onClick={(event) => event.stopPropagation()}>
                     <button type="button" className="remove-btn" onClick={handleRemove} disabled={isRemoving}>
                         Remove
                     </button>

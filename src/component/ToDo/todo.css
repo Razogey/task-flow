@@ -610,7 +610,51 @@ body {
 .header__search-container {
   position: relative;
   flex: 1;
-  max-width: 380px;
+  max-width: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 0;
+}
+
+.search-toggle {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background-color: var(--color-bg-panel);
+  border: 1.5px solid var(--color-border);
+  color: var(--color-text-body);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  flex-shrink: 0;
+  z-index: 2;
+}
+
+.search-toggle:hover {
+  background-color: var(--color-primary-light);
+  border-color: var(--color-primary);
+  transform: translateY(-1px);
+}
+
+.search-field-wrap {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: width 0.28s ease, opacity 0.2s ease, transform 0.28s ease;
+  pointer-events: none;
+}
+
+.header__search-container.is-open .search-field-wrap {
+  width: min(100%, 320px);
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .search-input {
@@ -626,6 +670,20 @@ body {
   box-sizing: border-box;
 }
 
+.header__search-container.is-open .search-toggle {
+  background-color: var(--color-primary-light);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.header__search-container.is-open .search-field-wrap {
+  transform: translateY(-50%);
+}
+
+.header__search-container.is-open .search-field-wrap .search-input {
+  box-shadow: var(--shadow-focus);
+}
+
 .search-input:hover {
   border-color: var(--color-border-strong);
 }
@@ -634,6 +692,10 @@ body {
   border-color: var(--color-primary);
   box-shadow: var(--shadow-focus);
   background-color: var(--color-bg-input);
+}
+
+.header__search-container.is-open .search-field-wrap .search-input {
+  box-shadow: var(--shadow-focus);
 }
 
 .search-input::placeholder {
@@ -810,7 +872,7 @@ body {
 
 .list-item {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: var(--space-3);
   padding: 14px var(--space-4);
@@ -820,6 +882,7 @@ body {
   transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, background-color var(--motion-slow) var(--motion-ease);
   box-sizing: border-box;
   animation: task-in var(--motion-base) var(--motion-ease) var(--task-delay, 150ms) both;
+  cursor: pointer;
 }
 
 .list-item.is-removing {
@@ -849,6 +912,13 @@ body {
 .remove-btn {
   background-color: transparent;
   color: var(--color-danger);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  line-height: 1;
+  padding: 0 12px !important;
+  box-sizing: border-box;
 }
 
 .remove-btn:hover {
@@ -1038,15 +1108,50 @@ body {
   display: flex;
   align-items: center;
   gap: var(--space-3);
+  width: 100%;
 }
 
 .task-input-container input[type="text"] {
   flex: 1;
+  min-width: 0;
 }
 
 .task-input-container button {
   margin-top: 0;
   flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 42px;
+  line-height: 1;
+  padding: 0 18px;
+  box-sizing: border-box;
+  vertical-align: middle;
+}
+
+.task-input-field {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  border-radius: var(--radius-pill);
+  background-color: var(--color-bg-input);
+  border: 1.5px solid var(--color-border);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+  min-height: 42px;
+  overflow: hidden;
+}
+
+.task-input-field:hover {
+  border-color: var(--color-border-strong);
+  background-color: var(--color-bg-panel);
+  box-shadow: 0 0 0 3px rgba(124, 110, 242, 0.06);
+}
+
+.task-input-field:focus-within {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-focus);
 }
 
 .task-list {
@@ -1131,20 +1236,30 @@ body {
 .edit-row input[type="text"] {
   flex: 1;
   min-width: 0;
+  height: 38px;
   padding: 8px 12px;
   border: 1.5px solid var(--color-primary);
   border-radius: var(--radius-sm);
   font-size: 0.9rem;
+  line-height: 1.2;
   outline: none;
   box-shadow: var(--shadow-focus);
+  box-sizing: border-box;
 }
 
 .save-btn {
   background-color: var(--color-primary);
   color: #ffffff;
   border-radius: var(--radius-pill);
-  padding: 6px 16px !important;
+  padding: 9px 16px !important;
   font-weight: 500;
+  font-size: 0.85rem;
+  line-height: 1;
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
 }
 
 .save-btn:hover {
@@ -1154,15 +1269,25 @@ body {
 .cancel-btn {
   background-color: transparent;
   color: var(--color-text-muted);
+  padding: 9px 12px !important;
+  font-size: 0.85rem;
+  line-height: 1;
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
 }
 
 .cancel-btn:hover {
   color: var(--color-text-primary);
+  background-color: rgba(36, 31, 61, 0.03);
 }
 
 .edit-row .cancel-btn,
 .edit-row .save-btn {
   flex: 0 0 auto;
+  margin-top: 0;
 }
 
 /* ==========================================================
@@ -1177,7 +1302,8 @@ body {
   height: 22px;
   flex-shrink: 0;
   cursor: pointer;
-  margin-top: 1px;
+  margin-top: 0;
+  align-self: center;
 }
 
 .checkbox input[type="checkbox"] {
@@ -1219,7 +1345,7 @@ body {
    ========================================================== */
 .list-item__main {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: var(--space-3);
   flex: 1;
   min-width: 0;
@@ -1228,6 +1354,7 @@ body {
 .task-content {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 5px;
   flex: 1;
   min-width: 0;
@@ -1268,27 +1395,13 @@ body {
 /* ==========================================================
    Add Task Input: circular "+" icon inside the field
    ========================================================== */
-.task-input-field {
-  position: relative;
-  flex: 1;
-}
-
-.task-input-icon {
-  position: absolute;
-  left: 6px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background-color: var(--color-primary);
-  color: #ffffff;
-  display: grid;
-  place-items: center;
-  pointer-events: none;
-}
-
 .task-input-field input[type="text"] {
-  padding-left: 46px;
+  width: 100%;
+  height: 42px;
+  padding: 0 16px;
   border-radius: var(--radius-pill);
+  border: none;
+  background: transparent;
+  box-sizing: border-box;
 }
+
