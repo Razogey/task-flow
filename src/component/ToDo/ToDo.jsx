@@ -14,7 +14,7 @@ export const ToDo = () => {
     ]);
     
     const [activeFilter, setActiveFilter] = useState("today");
-    const [isSidebarOpen, setIsSidebarOpen] = useState(() => window.innerWidth > 768);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [footerTab, setFooterTab] = useState('all');
     const activeTasksCount = tasks.filter(t => !t.completed).length;    
@@ -27,7 +27,10 @@ export const ToDo = () => {
         };
 
         window.addEventListener('keydown', handleKeyDown);
-        return () => window.removeEventListener('keydown', handleKeyDown);
+
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
     }, []);
 
     const clearCompletedTasks = () => {
