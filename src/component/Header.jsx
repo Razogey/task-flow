@@ -14,6 +14,11 @@ export const Header = ({
   onSearchClose
 }) => {
   const searchContainerRef = useRef(null);
+  const hour = new Date().getHours();
+  const greeting =
+    hour >= 5 && hour < 12 ? "Good morning," :
+    hour >= 12 && hour < 17 ? "Good afternoon," :
+    "Good evening,";
 
   useEffect(() => {
     if (!isSearchOpen) return;
@@ -64,7 +69,7 @@ export const Header = ({
 
         <div className="header__greeting">
           <h2>
-            Good morning, <span className="user-name">{userName}</span>
+            {greeting} <span className="user-name">{userName}</span>
           </h2>
         </div>
       </div>
