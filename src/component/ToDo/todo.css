@@ -412,6 +412,51 @@ body {
   z-index: 5;
 }
 
+/* Compact "Task Flow" brand shown in the header only while the sidebar
+   is closed/collapsed — animates in/out rather than toggling abruptly. */
+.header__brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: opacity var(--motion-base) var(--motion-ease),
+    transform var(--motion-base) var(--motion-ease),
+    width var(--motion-base) var(--motion-ease),
+    margin var(--motion-base) var(--motion-ease);
+}
+
+.header__brand.is-hidden {
+  width: 0;
+  opacity: 0;
+  transform: translateX(-8px);
+  margin: 0;
+  pointer-events: none;
+}
+
+.header__brand.is-visible {
+  width: auto;
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.header__brand-logo {
+  width: 28px;
+  height: 28px;
+  background-color: var(--color-primary);
+  border-radius: var(--radius-sm);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.header__brand-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: -0.2px;
+}
+
 .header__greeting h2 {
   font-size: 0.95rem;
   color: var(--color-text-muted);

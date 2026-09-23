@@ -1,5 +1,5 @@
 import React from 'react';
-import { Bell, Menu, Search, X } from 'lucide-react';
+import { Bell, CheckCheck, Menu, Search, X } from 'lucide-react';
 
 export const Header = ({ userName = "Rizga", searchQuery, onSearchChange, isSidebarOpen, onSidebarToggle }) => {
   return (
@@ -14,6 +14,20 @@ export const Header = ({ userName = "Rizga", searchQuery, onSearchChange, isSide
         >
           {isSidebarOpen ? <X size={20} strokeWidth={2.25} /> : <Menu size={20} strokeWidth={2.25} />}
         </button>
+
+        {/* Compact brand: the sidebar owns the "Task Flow" identity while
+            it's open. The instant it's closed/collapsed, this fades and
+            slides into view so the app identity is never lost. */}
+        <div
+          className={`header__brand ${isSidebarOpen ? 'is-hidden' : 'is-visible'}`}
+          aria-hidden={isSidebarOpen}
+        >
+          <span className="header__brand-logo">
+            <CheckCheck size={16} color="#fff" strokeWidth={2.5} />
+          </span>
+          <span className="header__brand-name">Task Flow</span>
+        </div>
+
         <div className="header__greeting">
         <h2>
           Good morning, <span className="user-name">{userName}</span> 
