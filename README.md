@@ -6,7 +6,9 @@ The application currently runs entirely in the browser. Tasks are held in React 
 
 Author: [Abdelrazzag Mohamed Elfatih A. Abdalla](https://github.com/abdelrazzag)
 
-Repository: [github.com/abdelrazzag/task-flow](https://github.com/abdelrazzag/task-flow)
+Repository: [github.com/Razogey/task-flow](https://github.com/Razogey/task-flow)
+
+Live demo: [Razogey/task-flow on GitHub Pages](https://razogey.github.io/task-flow/)
 
 ## Features
 
